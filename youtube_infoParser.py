@@ -46,30 +46,32 @@ def get_video_metadata(video_id, youtube):
         param:youtube (googleapiclient.discovery.Resource): YouTube API service object.
         returns:dict: A dictionary containing video metadata.
     """
+    
     request = youtube.videos().list(
-        part="snippet,statistics,contentDetails",
-        id=video_id
-    )
+            part="snippet,statistics,contentDetails",
+            id=video_id
+        )
     response = request.execute()
-
+    
     video = response['items'][0]
-    
-    metadata = {
-        'id': video['id'],
-        'publishedAt':video['snippet']['publishedAt'],
-        'channelId':video['snippet']['channelId'],
-        'description': video['snippet']['description'],
-        'likes': video['statistics'].get('likeCount', 'Not available'),
-        'dislikes': video['statistics'].get('dislikeCount', 'Not available'),
-        'views': video['statistics'].get('viewCount', 'Not available'),
-        'favorites':video['statistics'].get('favoriteCount', 'Not available'),
-        'comments':video['statistics'].get('commentCount', 'Not available'),
-        'duration': video['contentDetails']['duration'],  # Format like PT5M20S
-        'thumbnail':video['snippet']['thumbnails'].get('standard', {}).get('url', 'No standard thumbnail available')
         
-    }
-    
+    metadata = {
+            'id': video['id'],
+            'publishedAt':video['snippet']['publishedAt'],
+            'channelId':video['snippet']['channelId'],
+            'description': video['snippet']['description'],
+            'likes': video['statistics'].get('likeCount', 'Not available'),
+            'dislikes': video['statistics'].get('dislikeCount', 'Not available'),
+            'views': video['statistics'].get('viewCount', 'Not available'),
+            'favorites':video['statistics'].get('favoriteCount', 'Not available'),
+            'comments':video['statistics'].get('commentCount', 'Not available'),
+            'duration': video['contentDetails']['duration'],  # Format like PT5M20S
+            'thumbnail':video['snippet']['thumbnails'].get('standard', {}).get('url', 'No standard thumbnail available')
+            
+        }
+        
     return metadata
+        
 
 # Example use 
 # youtube = get_youtube_service('Replace_with_API_key')
